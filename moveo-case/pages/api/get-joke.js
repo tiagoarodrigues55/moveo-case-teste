@@ -15,7 +15,7 @@ export default async function handler(req, res) {
       );
 
       // Retorna o conteúdo da resposta recebida
-      res.status(200).json({joke: response.data, req:req.body});
+      res.status(200).json({context: {joke: response.data, req:req.body}});
     } catch (error) {
       // Em caso de erro, retorna a mensagem de erro
       res.status(500).json({ error: error.message });
