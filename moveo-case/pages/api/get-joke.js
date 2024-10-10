@@ -3,7 +3,6 @@
 import axios from 'axios';
 
 export default async function handler(req, res) {
-  if (req.method === 'GET') {
     try {
       const response = await axios.get(
         'https://v2.jokeapi.dev/joke/Any?lang=pt',
@@ -21,9 +20,4 @@ export default async function handler(req, res) {
       // Em caso de erro, retorna a mensagem de erro
       res.status(500).json({ error: error.message });
     }
-  } else {
-    // Retorna 405 se o método não for GET
-    res.setHeader('Allow', ['GET']);
-    res.status(405).end(`Method ${req.method} Not Allowed`);
-  }
 }
