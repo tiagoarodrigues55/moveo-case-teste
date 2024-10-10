@@ -4,7 +4,7 @@ const JokeAPI = require('sv443-joke-api');
 export default async function handler(req, res) {
   if (req.method === 'GET') {
     try {
-      const response = await JokeAPI.getJokes()
+      const response = await JokeAPI.getJokes(lang='pt')
         .then((res) => res.json())
         .then((data) => {
           res.status(200).json(data);
