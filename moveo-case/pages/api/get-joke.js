@@ -5,7 +5,7 @@ import axios from 'axios';
 export default async function handler(req, res) {
   if (req.method === 'GET') {
     try {
-      const response = await axios.post(
+      const response = await axios.get(
         'https://v2.jokeapi.dev/joke/Any?lang=pt',
         {},
         {
