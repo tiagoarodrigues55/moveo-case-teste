@@ -1,7 +1,7 @@
 import Head from "next/head";
-import Image from "next/image";
 import localFont from "next/font/local";
 import styles from "@/styles/Home.module.css";
+import { useEffect } from "react";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -14,7 +14,38 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
+function chatBoxLoader() {
+  //Creates the element <script> in the DOM
+  const scriptTag = document.createElement("script");
+  //Adds the attribute 'src' to the element created before.
+  scriptTag.src =
+    "https://cdn.jsdelivr.net/npm/@moveo-ai/web-client@latest/dist/web-client.min.js";
+  //In order to run the following script we need to wait until the library is fully loaded.
+  //To do this we can add an event listener which will trigger the script once the library is loaded
+  scriptTag.addEventListener("load", () => {
+    //Here we receive the confirmation that this eventv was successfully triggered.
+    console.log("Script is loaded");
+    //Right away we can run the script to get the element in where the chatbox is going to be executed.
+
+    MoveoAI.init({
+      integrationId: "53299d0b-93df-4730-b590-643d2189d5ab",
+      element: document.getElementById("embed"),
+    })
+      //Once it's loaded a log message will be sended to confirm this operation. In case something went wrong
+      //it'll log the error.
+      .then((desk) => console.log("Moveo connected"))
+      .catch((error) => console.error(error));
+  });
+  //Here the element we created before is being attached to our html body.
+  document.body.appendChild(scriptTag);
+}
+
 export default function Home() {
+
+  useEffect(() => {
+    chatBoxLoader();
+  }, []);
+
   return (
     <>
       <Head>
@@ -26,92 +57,7 @@ export default function Home() {
       <div
         className={`${styles.page} ${geistSans.variable} ${geistMono.variable}`}
       >
-        <main className={styles.main}>
-          <Image
-            className={styles.logo}
-            src="https://nextjs.org/icons/next.svg"
-            alt="Next.js logo"
-            width={180}
-            height={38}
-            priority
-          />
-          <ol>
-            <li>
-              Get started by editing <code>pages/index.js</code>.
-            </li>
-            <li>Save and see your changes instantly.</li>
-          </ol>
-
-          <div className={styles.ctas}>
-            <a
-              className={styles.primary}
-              href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Image
-                className={styles.logo}
-                src="https://nextjs.org/icons/vercel.svg"
-                alt="Vercel logomark"
-                width={20}
-                height={20}
-              />
-              Deploy now
-            </a>
-            <a
-              href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={styles.secondary}
-            >
-              Read our docs
-            </a>
-          </div>
-        </main>
-        <footer className={styles.footer}>
-          <a
-            href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              aria-hidden
-              src="https://nextjs.org/icons/file.svg"
-              alt="File icon"
-              width={16}
-              height={16}
-            />
-            Learn
-          </a>
-          <a
-            href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              aria-hidden
-              src="https://nextjs.org/icons/window.svg"
-              alt="Window icon"
-              width={16}
-              height={16}
-            />
-            Examples
-          </a>
-          <a
-            href="https://nextjs.org?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              aria-hidden
-              src="https://nextjs.org/icons/globe.svg"
-              alt="Globe icon"
-              width={16}
-              height={16}
-            />
-            Go to nextjs.org →
-          </a>
-        </footer>
+        <div className="screen" id="embed"></div>
       </div>
     </>
   );
