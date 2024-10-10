@@ -4,8 +4,9 @@ import axios from 'axios';
 
 export default async function handler(req, res) {
     try {
+      const lang = req.body.context.lang
       const response = await axios.get(
-        'https://v2.jokeapi.dev/joke/Any?lang=pt',
+        `https://v2.jokeapi.dev/joke/Any?lang=${lang}`,
         {},
         {
           headers: {
@@ -15,7 +16,7 @@ export default async function handler(req, res) {
       );
 
       // Retorna o conteúdo da resposta recebida
-      res.status(200).json({context: {joke: response.data, req:req.body}});
+      res.status(200).json({context: response.data});
     } catch (error) {
       // Em caso de erro, retorna a mensagem de erro
       res.status(500).json({ error: error.message });
