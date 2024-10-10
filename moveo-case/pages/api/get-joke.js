@@ -4,7 +4,10 @@ import axios from 'axios';
 
 export default async function handler(req, res) {
     try {
-      const lang = req.body.context.lang
+      const langs = ['cs', 'de', 'en', 'es', 'fr', 'pt']
+      let lang = req.body.context.lang
+      if (!langs.includes(lang)) lang = 'en'
+
       const response = await axios.get(
         `https://v2.jokeapi.dev/joke/Any?lang=${lang}`,
         {},
